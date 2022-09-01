@@ -17,6 +17,10 @@ export default class Shade {
         return new this(hex, positions, blur);
     }
 
+    static fromJSON(shadeJSON) {
+        return new Shade(shadeJSON.hex, shadeJSON.positions, shadeJSON.blur);
+    }
+
     static randomHex() {
         // <https://stackoverflow.com/questions/5092808/how-do-i-randomly-generate-html-hex-color-codes-using-javascript>
         return '#' + (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');

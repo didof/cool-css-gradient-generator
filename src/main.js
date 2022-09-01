@@ -1,41 +1,32 @@
 import Alpine from 'alpinejs';
+import collapse from '@alpinejs/collapse';
 import Shade from './shade';
+import templates from './templates';
 
-window.Alpine = Alpine
+Alpine.plugin(collapse);
+
+window.Alpine = Alpine;
+
+const d_width = 300;
+const d_height = 300;
+const d_blur = 0;
+const d_backgroundColor = '#ffffff';
+const d_backgroundImage = '';
 
 Alpine.store('demo', {
-    backgroundColor: '#ffffff',
-    backgroundImage: '',
+    width: d_width,
+    height: d_height,
+    blur: d_blur,
+    backgroundColor: d_backgroundColor,
+    backgroundImage: d_backgroundImage,
     shades: [],
 
-    templates: [
-        [
-            new Shade([52, 136, 207], [16, 32], 40),
-            new Shade([122, 109, 232], [34, 99], 44),
-            new Shade([227, 153, 145], [93, 56], 57),
-            new Shade([246, 229, 131], [43, 8], 58),
-            new Shade([104, 227, 211], [60, 66], 40),
-            new Shade([219, 233, 109], [28, 0], 40),
-        ],
-        [
-            new Shade([255, 184, 122], [40, 20], 50),
-            new Shade([31, 221, 255], [80, 0], 50),
-            new Shade([252, 222, 225], [0, 50], 50),
-            new Shade([255, 133, 173], [80, 50], 50),
-            new Shade([255, 181, 138], [0, 100], 50),
-            new Shade([107, 102, 255], [80, 100], 50),
-            new Shade([255, 133, 167], [0, 0], 50),
-        ],
-        [
-            new Shade([222, 107, 245], [99, 82], 48),
-            new Shade([120, 206, 252], [29, 4], 54),
-            new Shade([234, 72, 78], [50, 90], 52),
-            new Shade([160, 85, 226], [37, 65], 56),
-            new Shade([237, 146, 215], [12, 89], 47),
-            new Shade([253, 191, 83], [70, 74], 42),
-            new Shade([165, 207, 233], [96, 61], 47),
-        ]
-    ],
+    templates,
+
+    setBackgroundTransparent() {
+        this.backgroundColor = 'transparent';
+        this.update();
+    },
 
     addShade() {
         this.shades.push(Shade.buildRandom())
@@ -71,10 +62,10 @@ Alpine.store('demo', {
 
     toBackgroundImage(shades) {
         let backgroundImage = '';
-    
+
         shades.forEach(addRadialGradient);
         return backgroundImage.slice(0, -2);
-    
+
         function addRadialGradient(shade) {
             backgroundImage += `radial-gradient(at ${shade.positions[0]}% ${shade.positions[1]}%, rgb(${shade.getRgb().join(', ')}) 0px, transparent ${shade.blur}%), `
         }
@@ -82,25 +73,45 @@ Alpine.store('demo', {
 
     selectTemplate(index) {
         this.shades = this.templates[index];
-        console.log(this.shades)
         this.update();
     },
 
+    removeTemplate(index) {
+        this.templates.splice(index, 1);
+        console.log(index)
+    },
+
     reset() {
-        this.backgroundColor = '#ffffff';
+        this.width = d_width;
+        this.height = d_height;
+        this.blur = d_blur;
+        this.backgroundColor = d_backgroundColor;
+        this.backgroundImage = d_backgroundImage;
         this.shades = [];
         this.update();
     },
 
+    save() {
+        const previousSaves = JSON.parse(localStorage.getItem('custom_templates')) || [];
+        const copy = [...this.shades];
+        const updated = previousSaves.concat([copy]);
+        this.templates = [...this.templates, copy];
+        localStorage.setItem('custom_templates', JSON.stringify(updated));
+    },
+
     copyCSS() {
-        let copy = `background-color: ${this.backgroundColor};`;
+        let css = `width: ${this.width}px;\nheight: ${this.height}px;\nbackground-color: ${this.backgroundColor};\n`;
         if (this.shades.length > 0) {
-            copy += ` background-image: ${this.backgroundImage};`
+            css += `background-image: ${this.backgroundImage};\n`
         }
-        navigator.clipboard.writeText(copy).then(() => {
-            confirm(`CSS copied to clipboard:\n\n${copy}`)
+        if (this.blur > 0) {
+            css += `filter: blur(${this.blur}px)\n`;
+        }
+
+        navigator.clipboard.writeText(css).then(() => {
+            confirm(`CSS copied to clipboard:\n\n${css}`)
         }, (err) => {
-            alert(`Couldn't copy to clipboard. Please proceede manually:\n\n${copy}`);
+            alert(`Couldn't copy to clipboard. Please proceede manually:\n\n${css}`);
             console.error(err);
         });
     }
@@ -109,8 +120,27 @@ Alpine.store('demo', {
 Alpine.start();
 
 /**
- * save current work on local storage
- * save templates in local storage
  * add animation
  * add claymorphism
  */
+
+const resizer = document.querySelector("#resizer");
+const sidebar = document.querySelector("#sidebar");
+
+resizer.addEventListener("mousedown", (event) => {
+    document.addEventListener("mousemove", resize, false);
+    document.addEventListener("mouseup", () => {
+        document.removeEventListener("mousemove", resize, false);
+    }, false);
+});
+
+function resize(e) {
+    const size = `${e.x}px`;
+    sidebar.style.flexBasis = size;
+}
+
+/** 
+ * Helpers 
+ */
+
+sidebar.style.flexBasis = '325px';

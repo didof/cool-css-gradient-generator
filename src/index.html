@@ -13,87 +13,145 @@
 </head>
 
 <body class="w-screen h-screen bg-black text-white flex flex-col sm:flex-row" x-data>
-    <aside class="bg-gray-100 w-2/5 flex flex-col p-4 text-black overflow-y-auto">
-        <div class="flex justify-between items-center">
-            <h2>Cockpit</h2>
+    <div id="wrapper" class="flex flex-col overflow-hidden absolute h-full w-full m-0 p-0">
+        <div id="container" class="w-full h-full flex-shrink-0 relative flex overflow-hidden m-0 p-0">
+            <div id="sidebar" class="h-full relative m-0 p-0 min-w-0">
+                <aside class="bg-gray-100 w-full h-full flex flex-col p-4 text-black overflow-y-auto">
+                    <div class="flex justify-between items-center">
+                        <h2>Cockpit</h2>
+                    </div>
 
-            <button @click="$store.demo.reset()">Reset</button>
-        </div>
-        
+                    <div class="flex gap-2 my-4">
+                        <label for="background-color">background-color</label>
+                        <input id="background-color" type="color" x-model="$store.demo.backgroundColor">
+                        <template x-if="$store.demo.backgroundColor == 'transparent'">
+                            <span>(transparent)</span>
+                        </template>
+                        <template x-if="$store.demo.backgroundColor != 'transparent'">
+                            <button @click="$store.demo.setBackgroundTransparent()">❌</button>
+                        </template>
+                    </div>
 
-        <div class="flex gap-2 my-4">
-            <label for="background-color">background-color</label>
-            <input id="background-color" type="color" x-model="$store.demo.backgroundColor">
-        </div>
+                    <div class="flex gap-2 my-4">
+                        <label for="background-color" class="basis-12">width</label>
+                        <input type="range" min="10" max="1000" x-model="$store.demo.width" class="flex-grow">
+                        <span x-text="$store.demo.width" class="text-right basis-8"></span>
+                    </div>
 
-        <template x-for="(shade, index) in $store.demo.shades" :key="shade.id">
-            <article class="flex flex-col gap-2 my-4">
-                <header class="flex justify-between items-center">
-                    <strong x-text="shade.hex"></strong>
+                    <div class="flex gap-2 my-4">
+                        <label for="background-color" class="basis-12">height</label>
+                        <input type="range" min="10" max="1000" x-model="$store.demo.height" class="flex-grow">
+                        <span x-text="$store.demo.height" class="text-right basis-8"></span>
+                    </div>
 
-                    <button @click="$store.demo.removeShade(index)">&cross;</button>
-                </header>
+                    <div class="flex gap-2 my-4">
+                        <label for="background-color" class="basis-12"
+                            @click="alert('Tip: use blur to create a colored shadow effect and stack another div on top of it.')">blur</label>
+                        <input type="range" min="0" max="100" x-model="$store.demo.blur" class="flex-grow">
+                        <span x-text="$store.demo.blur" class="text-right basis-8"></span>
+                    </div>
 
-                <div class="flex justify-between items-center gap-2">
-                    <label>hex</label>
-                    <input type="color" x-bind:value="shade.hex" @input="$store.demo.inputColorShade($event, index)">
-                </div>
+                    <template x-for="(shade, index) in $store.demo.shades" :key="shade.id">
+                        <article class="flex flex-col gap-2 my-2" x-data="{ expanded: true }">
+                            <header class="flex justify-between items-center">
+                                <strong x-text="shade.hex" :style="`color: ${shade.hex}`"></strong>
 
-                <div class="flex justify-between items-center gap-2">
-                    <label>blur</label>
-                    <input type="range" min="0" max="100" x-bind:value="shade.blur"
-                        @input="$store.demo.inputBlurShade($event, index)">
-                </div>
+                                <div class="flex items-center gap-1">
+                                    <button @click="expanded = !expanded" class="pushable">
+                                        <span class="shadow"></span>
+                                        <span class="edge"></span>
+                                        <div class="front">🔒</div>
+                                    </button>
+                                    <button @click="$store.demo.removeShade(index)" class="pushable">
+                                        <span class="shadow"></span>
+                                        <span class="edge"></span>
+                                        <div class="front">❌</div>
+                                    </button>
+                                </div>
+                            </header>
 
-                <div class="flex justify-between items-center gap-2">
-                    <label>x</label>
-                    <input type="range" min="0" max="100" x-bind:value="shade.positions[0]"
-                        @input="$store.demo.inputPositionShade($event, index, 0)">
-                </div>
+                            <div x-show="expanded" x-collapse>
+                                <div class="flex justify-between items-center gap-2">
+                                    <label>hex</label>
+                                    <input type="color" x-bind:value="shade.hex"
+                                        @input="$store.demo.inputColorShade($event, index)">
+                                </div>
 
-                <div class="flex justify-between items-center gap-2">
-                    <label>y</label>
-                    <input type="range" min="0" max="100" x-bind:value="shade.positions[1]"
-                        @input="$store.demo.inputPositionShade($event, index, 1)">
-                </div>
+                                <div class="flex justify-between items-center gap-2">
+                                    <label>blur</label>
+                                    <input type="range" min="0" max="100" x-bind:value="shade.blur"
+                                        @input="$store.demo.inputBlurShade($event, index)">
+                                </div>
 
-            </article>
-        </template>
+                                <div class="flex justify-between items-center gap-2">
+                                    <label>x</label>
+                                    <input type="range" min="0" max="100" x-bind:value="shade.positions[0]"
+                                        @input="$store.demo.inputPositionShade($event, index, 0)">
+                                </div>
 
-        <button @click="$store.demo.addShade()">Add shade</button>
+                                <div class="flex justify-between items-center gap-2">
+                                    <label>y</label>
+                                    <input type="range" min="0" max="100" x-bind:value="shade.positions[1]"
+                                        @input="$store.demo.inputPositionShade($event, index, 1)">
+                                </div>
+                            </div>
+                        </article>
+                    </template>
 
-        <hr class="my-8">
+                    <button @click="$store.demo.addShade()" class="pushable">
+                        <span class="shadow"></span>
+                        <span class="edge"></span>
+                        <div class="front">Add shade ➕</div>
+                    </button>
 
-        <h3 class="mb-4">Templates</h3>
+                    <hr class="my-8">
 
-        <div class="grid grid-cols-3 gap-4">
-            <template x-for="(shades, index) in $store.demo.templates">
-                <div
-                    class="cursor-pointer aspect-square rounded-md shadow-md hover:shadow-xl hover:scale-105 transition duration-100 ease-in-out"
-                    :style="`background-color: ${$store.demo.backgroundColor}; background-image: ${$store.demo.toBackgroundImage(shades)}`"
-                    @click="$store.demo.selectTemplate(index)"
-                    ></div>
-            </template>
-        </div>
-    </aside>
-    <main class="w-full h-full flex flex-col gap-4 justify-center items-center">
-        <!-- <div class="flex flex-col gap-2 px-8">
-            <div>
-                <span>background-color: </span>
-                <span x-text="$store.demo.backgroundColor"></span>
+                    <h3 class="mb-4">Templates</h3>
+
+                    <div class="flex flex-wrap justify-start items-center gap-4">
+                        <template x-for="(shades, index) in $store.demo.templates">
+                            <div class="w-20 group relative cursor-pointer aspect-square rounded-md shadow-md hover:shadow-xl hover:scale-105 transition duration-100 ease-in-out"
+                                :style="`background-color: ${$store.demo.backgroundColor}; background-image: ${$store.demo.toBackgroundImage(shades)}`"
+                                @click="$store.demo.selectTemplate(index)">
+                                <!-- FIXME: <button @click.self="$store.demo.removeTemplate(index)" class="sm:hidden sm:group-hover:block text-black absolute top-0 right-1">&cross;</button> -->
+                            </div>
+                        </template>
+                    </div>
+                </aside>
             </div>
-            <div>
-                <span>background-image: </span>
-                <span x-text="$store.demo.backgroundImage"></span>
+            <div id="resizer" class="basis-4 relative z-[2] cursor-col-resize bg-slate-600 m-0 p-0"></div>
+            <div id="main" class="basis-0 flex-grow min-w-0 h-full flex flex-row relative m-0 p-0">
+                <main class="relative w-full h-full flex flex-col gap-4 justify-center items-center overflow-hidden">
+                    <!-- <div class="flex flex-col gap-2 px-8">
+                        <div>
+                            <span>background-color: </span>
+                            <span x-text="$store.demo.backgroundColor"></span>
+                        </div>
+                        <div>
+                            <span>background-image: </span>
+                            <span x-text="$store.demo.backgroundImage"></span>
+                        </div>
+                    </div> -->
+
+                    <div class="rounded-md text-red" :style="`
+                            width: ${$store.demo.width}px;
+                            height: ${$store.demo.height}px;
+                            filter: blur(${$store.demo.blur}px);
+                            background-color: ${$store.demo.backgroundColor};
+                            background-image: ${$store.demo.backgroundImage}`">
+                    </div>
+
+                    <div class="absolute bottom-4 right-4 flex items-center gap-2">
+                        <button @click="$store.demo.reset()">Reset</button>
+                        <button @click="$store.demo.save()">Save</button>
+                        <button @click="$store.demo.copyCSS()">Copy CSS</button>
+                    </div>
+                </main>
             </div>
-        </div> -->
-
-        <div class="w-1/2 aspect-square rounded-md text-red"
-            :style="`background-color: ${$store.demo.backgroundColor}; background-image: ${$store.demo.backgroundImage}`">
         </div>
+    </div>
 
-        <button class="fixed bottom-4 right-4" @click="$store.demo.copyCSS()">copy CSS</button>
-    </main>
+
 </body>
 
 </html>
