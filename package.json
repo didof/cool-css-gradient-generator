@@ -7,7 +7,7 @@
     "bundle:styles": "tailwindcss -i src/style.css -o public/style.css $(if [ \"$MODE\" = \"production\" ] || [ \"$MODE\" = \"staging\" ]; then echo \"--minify\" ; fi)",
     "bundle:scripts": "rollup -c --silent",
     "bundle:html": "cp src/index.html public/index.html",
-    "bundle": "npm-run-all --parallel bundle:*"
+    "bundle": "mkdir -p public && npm-run-all --parallel bundle:*"
   },
   "keywords": [],
   "author": "",
