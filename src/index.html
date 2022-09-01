@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool CSS gradient generator</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script type="module" src="main.js" defer></script>
+</head>
+
+<body class="w-screen h-screen bg-black text-white flex flex-col sm:flex-row" x-data>
+    <aside class="bg-gray-100 w-2/5 flex flex-col p-4 text-black overflow-y-auto">
+        <div class="flex justify-between items-center">
+            <h2>Cockpit</h2>
+
+            <button @click="$store.demo.reset()">Reset</button>
+        </div>
+        
+
+        <div class="flex gap-2 my-4">
+            <label for="background-color">background-color</label>
+            <input id="background-color" type="color" x-model="$store.demo.backgroundColor">
+        </div>
+
+        <template x-for="(shade, index) in $store.demo.shades" :key="shade.id">
+            <article class="flex flex-col gap-2 my-4">
+                <header class="flex justify-between items-center">
+                    <strong x-text="shade.hex"></strong>
+
+                    <button @click="$store.demo.removeShade(index)">&cross;</button>
+                </header>
+
+                <div class="flex justify-between items-center gap-2">
+                    <label>hex</label>
+                    <input type="color" x-bind:value="shade.hex" @input="$store.demo.inputColorShade($event, index)">
+                </div>
+
+                <div class="flex justify-between items-center gap-2">
+                    <label>blur</label>
+                    <input type="range" min="0" max="100" x-bind:value="shade.blur"
+                        @input="$store.demo.inputBlurShade($event, index)">
+                </div>
+
+                <div class="flex justify-between items-center gap-2">
+                    <label>x</label>
+                    <input type="range" min="0" max="100" x-bind:value="shade.positions[0]"
+                        @input="$store.demo.inputPositionShade($event, index, 0)">
+                </div>
+
+                <div class="flex justify-between items-center gap-2">
+                    <label>y</label>
+                    <input type="range" min="0" max="100" x-bind:value="shade.positions[1]"
+                        @input="$store.demo.inputPositionShade($event, index, 1)">
+                </div>
+
+            </article>
+        </template>
+
+        <button @click="$store.demo.addShade()">Add shade</button>
+
+        <hr class="my-8">
+
+        <h3 class="mb-4">Templates</h3>
+
+        <div class="grid grid-cols-3 gap-4">
+            <template x-for="(shades, index) in $store.demo.templates">
+                <div
+                    class="cursor-pointer aspect-square rounded-md shadow-md hover:shadow-xl hover:scale-105 transition duration-100 ease-in-out"
+                    :style="`background-color: ${$store.demo.backgroundColor}; background-image: ${$store.demo.toBackgroundImage(shades)}`"
+                    @click="$store.demo.selectTemplate(index)"
+                    ></div>
+            </template>
+        </div>
+    </aside>
+    <main class="w-full h-full flex flex-col gap-4 justify-center items-center">
+        <!-- <div class="flex flex-col gap-2 px-8">
+            <div>
+                <span>background-color: </span>
+                <span x-text="$store.demo.backgroundColor"></span>
+            </div>
+            <div>
+                <span>background-image: </span>
+                <span x-text="$store.demo.backgroundImage"></span>
+            </div>
+        </div> -->
+
+        <div class="w-1/2 aspect-square rounded-md text-red"
+            :style="`background-color: ${$store.demo.backgroundColor}; background-image: ${$store.demo.backgroundImage}`">
+        </div>
+
+        <button class="fixed bottom-4 right-4" @click="$store.demo.copyCSS()">copy CSS</button>
+    </main>
+</body>
+
+</html>
