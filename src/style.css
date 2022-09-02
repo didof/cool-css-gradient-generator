@@ -13,6 +13,7 @@
         cursor: pointer;
         outline-offset: 4px;
         transition: filter 250ms;
+        @apply w-fit mx-auto;
     }
 
     .shadow {

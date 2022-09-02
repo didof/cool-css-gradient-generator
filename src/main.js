@@ -2,6 +2,7 @@ import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
 import Shade from './shade';
 import templates from './templates';
+import './components/layout-sidebar-main';
 
 Alpine.plugin(collapse);
 
@@ -123,24 +124,3 @@ Alpine.start();
  * add animation
  * add claymorphism
  */
-
-const resizer = document.querySelector("#resizer");
-const sidebar = document.querySelector("#sidebar");
-
-resizer.addEventListener("mousedown", (event) => {
-    document.addEventListener("mousemove", resize, false);
-    document.addEventListener("mouseup", () => {
-        document.removeEventListener("mousemove", resize, false);
-    }, false);
-});
-
-function resize(e) {
-    const size = `${e.x}px`;
-    sidebar.style.flexBasis = size;
-}
-
-/** 
- * Helpers 
- */
-
-sidebar.style.flexBasis = '325px';
