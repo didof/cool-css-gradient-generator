@@ -26,7 +26,7 @@
                     <span>(transparent)</span>
                 </template>
                 <template x-if="$store.demo.backgroundColor != 'transparent'">
-                    <button @click="$store.demo.setBackgroundTransparent()">❌</button>
+                    <jc-button @click="$store.demo.setBackgroundTransparent()">❌</jc-button>
                 </template>
             </div>
 
@@ -52,7 +52,7 @@
             <template x-for="(shade, index) in $store.demo.shades" :key="shade.id">
                 <article class="flex flex-col gap-2 my-2" x-data="{ expanded: true }">
                     <header class="flex justify-between items-center">
-                        <strong x-text="shade.hex" :style="`color: ${shade.hex}`"></strong>
+                        <input type="text" minlength="0" maxlength="7" :style="`color: ${shade.hex}`" :value="shade.hex" class="w-20" @input="$store.demo.inputColorShadeManual($event, index)">
 
                         <div class="flex items-center gap-1">
                             <button @click="expanded = !expanded" class="pushable">
@@ -133,6 +133,15 @@
             </div>
         </main>
     </layout-sidebar-main>
+
+    <template id="jc-button">
+        <style>@import "style.css";</style>
+        <button class="pushable">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <div class="front"><slot /></div>
+        </button>
+    </template>
 
     <template id="layout-sidebar-main">
         <style>@import "style.css";</style>

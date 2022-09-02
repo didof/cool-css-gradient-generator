@@ -6,14 +6,7 @@
 
 @layer components {
     .pushable {
-        position: relative;
-        border: none;
-        background: transparent;
-        padding: 0;
-        cursor: pointer;
-        outline-offset: 4px;
-        transition: filter 250ms;
-        @apply w-fit mx-auto;
+        @apply relative w-fit mx-auto border-none bg-transparent p-0 cursor-pointer outline-4 transition duration-[250ms];
     }
 
     .shadow {

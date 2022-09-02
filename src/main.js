@@ -3,6 +3,7 @@ import collapse from '@alpinejs/collapse';
 import Shade from './shade';
 import templates from './templates';
 import './components/layout-sidebar-main';
+import './components/jc-button';
 
 Alpine.plugin(collapse);
 
@@ -43,6 +44,15 @@ Alpine.store('demo', {
         const { value } = event.target;
         this.shades[index].hex = value;
         this.update();
+    },
+
+    inputColorShadeManual(event, index) {
+        const { value } = event.target;
+
+        if(/^#[0-9A-F]{6}$/i.test(value)) {
+            this.shades[index].hex = value;
+            this.update();
+        }
     },
 
     inputBlurShade(event, index) {
@@ -121,6 +131,12 @@ Alpine.store('demo', {
 Alpine.start();
 
 /**
- * add animation
  * add claymorphism
+ * add modal
+ * add og
+ * add favicon
+ * pagina noscript con meme
+ * make exportable as svg too https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Gradients
+ * create export and save in the query_params a representation of the state, so if you click it the js assembles the state on page load
+ * twitta josh comeau
  */
