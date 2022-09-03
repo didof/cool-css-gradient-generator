@@ -4,10 +4,11 @@
   "description": "",
   "main": "main.js",
   "scripts": {
+    "bundle:static": "cp static/* public/",
     "bundle:styles": "tailwindcss -i src/style.css -o public/style.css $(if [ \"$MODE\" = \"production\" ] || [ \"$MODE\" = \"staging\" ]; then echo \"--minify\" ; fi)",
     "bundle:scripts": "rollup -c --silent",
     "bundle:html": "cp src/index.html public/index.html",
-    "bundle": "mkdir -p public && npm-run-all --parallel bundle:*"
+    "bundle": "rm -rf public && mkdir -p public && npm-run-all --parallel bundle:*"
   },
   "keywords": [],
   "author": "",
