@@ -7,5 +7,13 @@ customElements.define('jc-button',
             const shadowRoot = this.attachShadow({ mode: 'open' });
             shadowRoot.appendChild(template.cloneNode(true));
         }
+
+        connectedCallback() {
+            const { front } = this.dataset;
+            if(front) {
+                const el = this.shadowRoot.querySelector('.front')
+                el.classList.add(...front.split(' '))
+            }
+        }
     }
 );

@@ -14,57 +14,72 @@
 
 <body class="w-screen h-screen bg-black text-white flex flex-col sm:flex-row select-none" x-data>
     <layout-sidebar-main>
-        <aside slot="sidebar" class="bg-gray-100 min-w-[320px] w-full h-full flex flex-col p-4 text-black overflow-y-auto">
-            <div class="flex justify-between items-center">
-                <h2>Cockpit</h2>
-            </div>
+        <aside slot="sidebar"
+            class="clay bg-gray-100 min-w-[320px] w-full h-full flex flex-col gap-4 p-4 text-black overflow-y-auto">
 
-            <div class="flex gap-2 my-4">
-                <label for="background-color">background-color</label>
-                <input id="background-color" type="color" x-model="$store.demo.backgroundColor">
-                <template x-if="$store.demo.backgroundColor == 'transparent'">
-                    <span>(transparent)</span>
-                </template>
-                <template x-if="$store.demo.backgroundColor != 'transparent'">
-                    <jc-button @click="$store.demo.setBackgroundTransparent()">❌</jc-button>
-                </template>
-            </div>
+            <div class="clay rounded-xl bg-slate-100 p-4" x-data="{ expanded: false }">
+                <header class="flex justify-between items-center">
+                    <input type="text" minlength="0" maxlength="7" x-model="$store.demo.backgroundColor"
+                        class="w-20 border-black border-[1px] px-1 text-center">
 
-            <div class="flex gap-2 my-4">
-                <label for="background-color" class="basis-12">width</label>
-                <input type="range" min="10" max="1000" x-model="$store.demo.width" class="flex-grow">
-                <span x-text="$store.demo.width" class="text-right basis-8"></span>
-            </div>
+                    <div class="flex items-center gap-1">
+                        <jc-button @click="expanded = !expanded">🔒</jc-button>
+                    </div>
+                </header>
 
-            <div class="flex gap-2 my-4">
-                <label for="background-color" class="basis-12">height</label>
-                <input type="range" min="10" max="1000" x-model="$store.demo.height" class="flex-grow">
-                <span x-text="$store.demo.height" class="text-right basis-8"></span>
-            </div>
+                <div x-show="expanded" x-collapse>
+                    <div class="flex justify-between items-center my-4">
+                        <div class="flex items-center gap-2">
+                            <label for="background-color">background-color</label>
+                            <input id="background-color" type="color" x-model="$store.demo.backgroundColor"
+                                class="w-6 h-6">
+                        </div>
 
-            <div class="flex gap-2 my-4">
-                <label for="background-color" class="basis-12"
-                    @click="alert('Tip: use blur to create a colored shadow effect and stack another div on top of it.')">blur</label>
-                <input type="range" min="0" max="100" x-model="$store.demo.blur" class="flex-grow">
-                <span x-text="$store.demo.blur" class="text-right basis-8"></span>
+                        <template x-if="$store.demo.backgroundColor == 'transparent'">
+                            <span class="text-xs text-gray-500">(transparent)</span>
+                        </template>
+                        <template x-if="$store.demo.backgroundColor != 'transparent'">
+                            <jc-button @click="$store.demo.setBackgroundTransparent()">❌</jc-button>
+                        </template>
+                    </div>
+
+                    <div class="flex flex-col gap-2 my-4">
+                        <div class="flex justify-between items-center">
+                            <label for="background-color">width</label>&nbsp;
+                            <span x-text="$store.demo.width"></span>
+                        </div>
+                        <input type="range" min="10" max="1000" x-model="$store.demo.width">
+                    </div>
+
+                    <div class="flex flex-col gap-2 my-4">
+                        <div class="flex justify-between items-center">
+                            <label for="background-color">height</label>&nbsp;
+                            <span x-text="$store.demo.height"></span>
+                        </div>
+                        <input type="range" min="10" max="1000" x-model="$store.demo.height">
+                    </div>
+
+                    <div class="flex flex-col gap-2 my-4">
+                        <div class="flex justify-between items-center">
+                            <label for="background-color"
+                                @click="alert('Tip: use blur to create a colored shadow effect and stack another div on top of it.')">blur</label>
+                            <span x-text="$store.demo.blur"></span>
+                        </div>
+                        <input type="range" min="0" max="100" x-model="$store.demo.blur">
+                    </div>
+                </div>
             </div>
 
             <template x-for="(shade, index) in $store.demo.shades" :key="shade.id">
                 <article class="flex flex-col gap-2 my-2" x-data="{ expanded: true }">
                     <header class="flex justify-between items-center">
-                        <input type="text" minlength="0" maxlength="7" :style="`color: ${shade.hex}`" :value="shade.hex" class="w-20" @input="$store.demo.inputColorShadeManual($event, index)">
+                        <input type="text" minlength="0" maxlength="7" :style="`color: ${shade.hex}`" :value="shade.hex"
+                            class="w-20 border-black border-[1px] px-1 text-center"
+                            @input="$store.demo.inputColorShadeManual($event, index)">
 
                         <div class="flex items-center gap-1">
-                            <button @click="expanded = !expanded" class="pushable">
-                                <span class="shadow"></span>
-                                <span class="edge"></span>
-                                <div class="front">🔒</div>
-                            </button>
-                            <button @click="$store.demo.removeShade(index)" class="pushable">
-                                <span class="shadow"></span>
-                                <span class="edge"></span>
-                                <div class="front">❌</div>
-                            </button>
+                            <jc-button @click="expanded = !expanded">🔒</jc-button>
+                            <jc-button @click="$store.demo.removeShade(index)">❌</jc-button>
                         </div>
                     </header>
 
@@ -72,7 +87,7 @@
                         <div class="flex justify-between items-center gap-2">
                             <label>hex</label>
                             <input type="color" x-bind:value="shade.hex"
-                                @input="$store.demo.inputColorShade($event, index)">
+                                @input="$store.demo.inputColorShade($event, index)" class="w-6 h-6">
                         </div>
 
                         <div class="flex justify-between items-center gap-2">
@@ -83,24 +98,20 @@
 
                         <div class="flex justify-between items-center gap-2">
                             <label>x</label>
-                            <input type="range" min="0" max="100" x-bind:value="shade.positions[0]"
+                            <input type="range" min="-100" max="200" x-bind:value="shade.positions[0]"
                                 @input="$store.demo.inputPositionShade($event, index, 0)">
                         </div>
 
                         <div class="flex justify-between items-center gap-2">
                             <label>y</label>
-                            <input type="range" min="0" max="100" x-bind:value="shade.positions[1]"
+                            <input type="range" min="-100" max="200" x-bind:value="shade.positions[1]"
                                 @input="$store.demo.inputPositionShade($event, index, 1)">
                         </div>
                     </div>
                 </article>
             </template>
 
-            <button @click="$store.demo.addShade()" class="pushable">
-                <span class="shadow"></span>
-                <span class="edge"></span>
-                <div class="front">Add shade ➕</div>
-            </button>
+            <jc-button @click="$store.demo.addShade()">➕</jc-button>
 
             <hr class="my-8">
 
@@ -117,8 +128,9 @@
             </div>
         </aside>
 
-        <main slot="main" class="relative w-full h-full flex flex-col gap-4 justify-center items-center overflow-hidden">
-            <div class="rounded-md text-red" :style="`
+        <main slot="main"
+            class="relative w-full h-full flex flex-col gap-4 justify-center items-center overflow-hidden">
+            <div class="rounded-md clay" :style="`
                     width: ${$store.demo.width}px;
                     height: ${$store.demo.height}px;
                     filter: blur(${$store.demo.blur}px);
@@ -126,32 +138,56 @@
                     background-image: ${$store.demo.backgroundImage}`">
             </div>
 
-            <div class="absolute bottom-4 right-4 flex items-center gap-2">
-                <button @click="$store.demo.reset()">Reset</button>
-                <button @click="$store.demo.save()">Save</button>
-                <button @click="$store.demo.copyCSS()">Copy CSS</button>
-            </div>
+            <nav class="flex justify-between items-center gap-1 absolute w-full bottom-0 left-0 p-2">
+                <div>
+                    <jc-button @click="$store.demo.reset()">Reset</jc-button>
+                </div>
+
+                <div class="flex items-center gap-1">
+                    <jc-button @click="$store.demo.save()" data-front="bg-green-100 text-gray-700">Save</jc-button>
+                    <jc-button @click="$store.demo.copyCSS()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                        Copy CSS
+                    </jc-button>
+                    <jc-button @click="$store.demo.getLink()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        Copy URL 
+                    </jc-button>
+                </div>
+            </nav>
         </main>
     </layout-sidebar-main>
 
     <template id="jc-button">
-        <style>@import "style.css";</style>
+        <style>
+            @import "style.css";
+        </style>
         <button class="pushable">
             <span class="shadow"></span>
             <span class="edge"></span>
-            <div class="front"><slot /></div>
+            <div class="front">
+                <slot />
+            </div>
         </button>
     </template>
 
     <template id="layout-sidebar-main">
-        <style>@import "style.css";</style>
+        <style>
+            @import "style.css";
+        </style>
         <div class="flex flex-col overflow-hidden absolute h-full w-full">
             <div class="w-full h-full flex-shrink-0 relative flex overflow-hidden">
                 <div id="sidebar" class="h-full relative min-w-0">
                     <slot name="sidebar" />
                 </div>
-                <div id="resizer" class="basis-3 relative z-[2] cursor-col-resize bg-slate-300">
-                    <div class="md:hidden absolute left-1/2 -translate-x-1/2 top-8 w-8 h-8 rounded-full bg-slate-400 shadow-lg flex justify-center items-center">☝️</div>
+                <div id="resizer" class="clay basis-3 relative z-[2] cursor-col-resize bg-slate-300">
+                    <div
+                        class="clay absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2 w-8 h-8 rounded-full bg-slate-400 shadow-lg flex justify-center items-center">
+                        ☝️</div>
                 </div>
                 <div class="basis-0 flex-grow min-w-0 h-full flex flex-row relative">
                     <slot name="main" />
