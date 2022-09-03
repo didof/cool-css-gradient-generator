@@ -37,6 +37,9 @@
 </head>
 
 <body class="w-screen h-screen bg-black text-white flex flex-col sm:flex-row select-none" x-data>
+    <div id="lock-landscape-orientation" class="fixed hidden z-10 w-screen h-screen bg-black justify-center items-center text-lg">
+        Rotate your device.
+    </div>
     <layout-sidebar-main>
         <aside slot="sidebar"
             class="bg-gray-100 min-w-[320px] w-full h-full flex flex-col gap-4 p-4 text-black overflow-y-auto">
@@ -207,7 +210,7 @@
         <style>
             @import "style.css";
         </style>
-        <div class="flex flex-col overflow-hidden absolute h-full w-full">
+        <div class="isolate flex flex-col overflow-hidden absolute h-full w-full">
             <div class="w-full h-full flex-shrink-0 relative flex overflow-hidden">
                 <div id="sidebar" class="h-full relative min-w-0">
                     <slot name="sidebar" />

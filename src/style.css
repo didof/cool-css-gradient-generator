@@ -8,6 +8,20 @@
     --secondary: #B8BAC8;
 }
 
+@media all and (hover:none) {
+    @media all and (orientation:portrait) {
+        #lock-landscape-orientation {
+            @apply flex;
+        }
+    }
+    
+    @media all and (orientation:landscape) {
+        #lock-landscape-orientation {
+            @apply hidden;
+        }
+    }
+}
+
 @layer base {}
 
 @layer components {
@@ -84,5 +98,4 @@
     }
 }
 
-@layer utilities {
-}
+@layer utilities {}
