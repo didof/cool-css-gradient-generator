@@ -85,10 +85,4 @@
 }
 
 @layer utilities {
-    .clay {
-        box-shadow: 
-          8px 8px 50px -12px rgba(0, 0, 0, .25), /* Outset shadow */
-          inset -8px -8px 10px 0 rgba(0, 0, 0, .25), /* Dark inset shadow */
-          inset 8px 8px 14px 0 rgba(255, 255, 255, 0.4); /* Light inset shadow */
-    }
 }

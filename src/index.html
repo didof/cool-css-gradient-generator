@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cool CSS gradient generator</title>
 
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
     <link rel="stylesheet" href="style.css">
 
     <script type="module" src="main.js" defer></script>
@@ -15,9 +22,9 @@
 <body class="w-screen h-screen bg-black text-white flex flex-col sm:flex-row select-none" x-data>
     <layout-sidebar-main>
         <aside slot="sidebar"
-            class="clay bg-gray-100 min-w-[320px] w-full h-full flex flex-col gap-4 p-4 text-black overflow-y-auto">
+            class="bg-gray-100 min-w-[320px] w-full h-full flex flex-col gap-4 p-4 text-black overflow-y-auto">
 
-            <div class="clay rounded-xl bg-slate-100 p-4" x-data="{ expanded: false }">
+            <div class="rounded-xl bg-slate-100 p-4" x-data="{ expanded: false }">
                 <header class="flex justify-between items-center">
                     <input type="text" minlength="0" maxlength="7" x-model="$store.demo.backgroundColor"
                         class="w-20 border-black border-[1px] px-1 text-center">
@@ -130,12 +137,12 @@
 
         <main slot="main"
             class="relative w-full h-full flex flex-col gap-4 justify-center items-center overflow-hidden">
-            <div class="rounded-md clay" :style="`
-                    width: ${$store.demo.width}px;
-                    height: ${$store.demo.height}px;
-                    filter: blur(${$store.demo.blur}px);
-                    background-color: ${$store.demo.backgroundColor};
-                    background-image: ${$store.demo.backgroundImage}`">
+            <div class="rounded-md" :style="`
+                width: ${$store.demo.width}px;
+                height: ${$store.demo.height}px;
+                filter: blur(${$store.demo.blur}px);
+                background-color: ${$store.demo.backgroundColor};
+                background-image: ${$store.demo.backgroundImage}`">
             </div>
 
             <nav class="flex justify-between items-center gap-1 absolute w-full bottom-0 left-0 p-2">
@@ -154,8 +161,12 @@
                         Copy CSS
                     </jc-button>
                     <jc-button @click="$store.demo.getLink()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                        Copy URL 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                        Copy URL
                     </jc-button>
                 </div>
             </nav>
@@ -184,9 +195,9 @@
                 <div id="sidebar" class="h-full relative min-w-0">
                     <slot name="sidebar" />
                 </div>
-                <div id="resizer" class="clay basis-3 relative z-[2] cursor-col-resize bg-slate-300">
+                <div id="resizer" class=" basis-3 relative z-[2] cursor-col-resize bg-slate-300">
                     <div
-                        class="clay absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2 w-8 h-8 rounded-full bg-slate-400 shadow-lg flex justify-center items-center">
+                        class=" absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2 w-8 h-8 rounded-full bg-slate-400 shadow-lg flex justify-center items-center">
                         ☝️</div>
                 </div>
                 <div class="basis-0 flex-grow min-w-0 h-full flex flex-row relative">
