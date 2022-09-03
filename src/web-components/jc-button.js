@@ -6,14 +6,26 @@ customElements.define('jc-button',
 
             const shadowRoot = this.attachShadow({ mode: 'open' });
             shadowRoot.appendChild(template.cloneNode(true));
+
+            this.shadowRoot.addEventListener('click', event => {
+                if(this.shadowRoot.querySelector('.pushable').classList.contains('disabled')) {
+                    event.stopPropagation();
+                }
+            })
         }
 
-        connectedCallback() {
-            const { front } = this.dataset;
-            if(front) {
-                const el = this.shadowRoot.querySelector('.front')
-                el.classList.add(...front.split(' '))
+        static get observedAttributes() {
+            return ["disabled"];
+        }
+
+        attributeChangedCallback(attribute, oldValue, newValue) {
+            switch(attribute) {
+                case "disabled":
+                    this.shadowRoot.querySelector('.pushable').classList.toggle("disabled");
             }
         }
+
+        // connectedCallback() {
+        // }
     }
 );

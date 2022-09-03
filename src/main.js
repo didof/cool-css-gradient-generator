@@ -9,18 +9,18 @@ Alpine.plugin(collapse);
 
 window.Alpine = Alpine;
 
-
+const mainRect = document.querySelector('main').getBoundingClientRect();
 
 const search = new URLSearchParams(new URL(window.location).search)
-const d_width = search.get('w') || 300;
-const d_height = search.get('h') || 300;
+const d_width = search.get('w') || (mainRect.width / 3);
+const d_height = search.get('h') || (mainRect.width / 3);
 const d_blur = search.get('b') || 0;
 const d_backgroundColor = search.get('bg') || '#ffffff';
 const s = search.get('s');
 let d_shades = [];
 let d_backgroundImage = '';
 if (s != null) {
-    d_shades = s.split(';').map(encoded => encoded.split('|')).map(data => new Shade(data[0], data[1].split(':'), data[2]))
+    d_shades = s.split(';').slice(0, 10).map(encoded => encoded.split('|')).map(data => new Shade(data[0], data[1].split(':'), data[2]))
     d_backgroundImage = toBackgroundImage(d_shades);
 }
 
@@ -100,6 +100,7 @@ Alpine.store('demo', {
         this.backgroundImage = d_backgroundImage;
         this.shades = [];
         this.update();
+        window.location.search = new URLSearchParams();
     },
 
     save() {
@@ -119,7 +120,7 @@ Alpine.store('demo', {
             css += `filter: blur(${this.blur}px)\n`;
         }
 
-        this._copy(css, `CSS copied to clipboard:\n\n${text}`);
+        this._copy(css, `CSS copied to clipboard:\n\n${css}`);
     },
 
     getLink() {

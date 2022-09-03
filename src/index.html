@@ -111,7 +111,7 @@
                 </article>
             </template>
 
-            <jc-button @click="$store.demo.addShade()">➕</jc-button>
+            <jc-button @click="$store.demo.addShade()" :disabled="$store.demo.shades.length >= 10">➕</jc-button>
 
             <hr class="my-8">
 
@@ -144,7 +144,7 @@
                 </div>
 
                 <div class="flex items-center gap-1">
-                    <jc-button @click="$store.demo.save()" data-front="bg-green-100 text-gray-700">Save</jc-button>
+                    <jc-button @click="$store.demo.save()">Save</jc-button>
                     <jc-button @click="$store.demo.copyCSS()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

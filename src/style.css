@@ -19,6 +19,10 @@
         @apply relative w-fit mx-auto border-none bg-transparent p-0 cursor-pointer outline-4 transition duration-[250ms] hover:brightness-110;
     }
 
+    .pushable.disabled {
+        @apply cursor-not-allowed hover:brightness-100;
+    }
+
     .shadow {
         @apply absolute-full rounded-xl will-change-transform translate-y-[2px] transition-transform duration-[600ms] ease-[cubic-bezier(.3,.7,.4,1)];
         background: hsl(0deg 0% 0% / 0.25);
@@ -43,20 +47,36 @@
         @apply bg-slate-200 text-black relative py-1 px-2 rounded-xl text-base will-change-transform -translate-y-1 transition-transform duration-[600ms] ease-[cubic-bezier(.3,.7,.4,1)] flex justify-center items-center gap-1;
     }
 
-    .pushable:hover .front {
+    .pushable:not(.disabled):hover .front {
         @apply -translate-y-[6px] transition-transform duration-[200ms] ease-[.3,.7,.4,1.5];
     }
 
-    .pushable:active .front {
-        @apply -translate-y-[2px] transition-transform duration-[34ms];
+    .pushable .front {
+        @apply transition-transform duration-[34ms];
     }
 
-    .pushable:hover .shadow {
+    .pushable:not(.disabled):active .front {
+        @apply -translate-y-[2px];
+    }
+
+    .pushable.disabled .front {
+        @apply -translate-y-px;
+    }
+
+    .pushable .shadow {
+        @apply transition-transform duration-[34ms];
+    }
+
+    .pushable:not(.disabled):hover .shadow {
         @apply translate-y-1 transition-transform duration-[250ms] ease-[.3,.7,.4,1.5];
     }
 
-    .pushable:active .shadow {
-        @apply translate-y-px transition-transform duration-[34ms];
+    .pushable:not(.disabled):active .shadow {
+        @apply translate-y-px;
+    }
+
+    .pushable.disabled .shadow {
+        @apply translate-y-0;
     }
 
     .pushable:focus:not(:focus-visible) {
